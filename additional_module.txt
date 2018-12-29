@@ -1,0 +1,11 @@
+How to use local module without installing using PIP in python
+
+e.g.
+
+file_path = '/home/additionalmod/'
+
+sys.path.append(OS.path.dirname(file_path))
+
+print(sys.path)
+
+This will add module in python without installing 

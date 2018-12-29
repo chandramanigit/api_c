@@ -1,7 +1,7 @@
 #!/usr/bin/python
 
 import os , sys , requests , subprocess 
-from flask import render_template , Flask
+from flask import render_template , Flask #render_template is for useing html file in displaying static page 
 from flask import request
 
 
@@ -9,7 +9,7 @@ app = Flask(__name__)
 
 @app.route('/')
 def index():
-	return render_template('index.html')
+	return render_template('index.html')	#need to create inside /template/ folder 
 
 @app.route('/kill' , methods=['GET' , 'POST'])
 def killjob():

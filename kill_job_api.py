@@ -1,7 +1,7 @@
 #!/usr/bin/python
 
 import os , sys , requests , subprocess 
-from flask import Flask
+from flask import render_template , Flask
 from flask import request
 
 
@@ -9,7 +9,7 @@ app = Flask(__name__)
 
 @app.route('/')
 def index():
-	return "uses: to kill job use /kill?oid=order_id of job"
+	return render_template('index.html')
 
 @app.route('/kill' , methods=['GET' , 'POST'])
 def killjob():

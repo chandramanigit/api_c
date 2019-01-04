@@ -8,7 +8,6 @@ print("hello " + name + "lets play game to guess number between 1 to 20 ")
 
 secretnum = random.randint(1,20)
 
-print('secret number :', secretnum)
 
 for turn in range(1, 7):
 

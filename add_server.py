@@ -30,7 +30,8 @@ def tokengen():
 	if 'error' in loginresponse:
 		print(json.dumps(loginresponse)['errors']) 	
 	print(token)
-
+	data=json.loads('{"Authorization": "Bearer '+token+'"}')
+	
 def define_server():
     global data
     data = json.loads('{"Authorization": "Bearer ' + token + '"}')  # the jobs statues call should have the token in the header as JSON
@@ -42,9 +43,11 @@ def define_server():
 
 def logouturl1():
 	logouturl = baseurl + '/session/logout'
-	body = json.loads('{ "token":"' + token + '", "username": "' + username + '"}')
-	r3 = requests.post( logouturl , data=body, verify=False)
+	#body = json.loads('{ "token":"' + token + '", "username": "' + username + '"}')  - iold method not work now
+	#r3 = requests.post( logouturl , data=body, verify=False)
+	r3 = request.post(logouturl , headers=data , verify=False)
 	print(r3.text)
+	
 	
 tokengen()
 define_server()

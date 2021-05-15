@@ -1,0 +1,83 @@
+how to install Contro-M agent using AUTOMATION API
+--------
+step 1. create user on new server
+step 2. install node.js and npm ( npm get auto installed)
+step 3. install the ctm-cli on server using below
+
+wget https://<emserver>:8443/automation-api/ctm-cli.tgz --no-check-certificate
+step 4: install ctm-cli using below command
+npm install -g ctm-cli.tgz 
+***g option for global i tried with local user didnt worked , had to install using root
+
+step 5. set the environment ( assuming open jdk 1.8 or above is there on system ) 
+
+ctm environment add <env_name> "https://<emserver>:8443/automation-api" "username" "password"
+
+step 6. 
+
+on CTM EM side , as you might have new version of installation media in <em_home>/ctm_cm/AUTO_DEPLOY
+e.g. DRKAI.9.0.19.200_Linux-x86_64.tar.Z
+
+then you need to update file in below location ( giving exxample for Linix 9.19.200)
+
+<em_home>/ctm_em/etc/emweb/automation-api/downloads/descriptors
+
+
+step 6.A - > copy Agent_18.Linux.json as Agent_19.Linux.json
+step 6.B -> edit the Agent_18.Linux.json as shown below 
+{
+    "OS": "Linux-x86_64",
+    "Installers":
+    [
+      "DRKAI.9.0.19.200_Linux-x86_64.tar.Z"
+    ]
+}
+
+step 7 . -> now on ctm agent server run the command to display available installations 
+
+ctm provision images "Linux"
+output :-
+[
+  "Agent.Linux",
+  "Agent_18.Linux",
+  "Agent_19.Linux",
+  "ApplicationsAgent.Linux",
+  "BigDataAgent.Linux",
+  "Server.Linux"
+]
+
+you can see  "Agent_19.Linux" showing now in this 
+
+step 8 . install and configure agent 
+
+ctm provision install Agent_19.Linux <CTM SERVER NAME eg CTMTEST> <hostname of agent> <server to agent port e.g 7006>
+
+optional :-
+
+step 9 . you need to update authorized server name in it , however this can be done using below file update 
+
+<em home>/ctm_em/etc/emweb/automation-api/downloads/silent/agent.linux.xml
+
+<AutomatedInstallation langpack="eng">
+    <agent.parameters>
+        <entry key="ctm_agent.AR_AT.Common.Port" value="${free.port(7135)}"/>
+        <entry key="ctm_agent.AR_UT.Common.Port" value="${free.port(7235)}"/>
+        <entry key="ctm_agent.AR_AG.Common.Port" value="${free.port(7335)}"/>
+        <entry key="ctm_agent.Tracker.Event.Port" value="${free.port(7035)}"/>
+        <entry key="field.Authorized.Controlm.Server.Host" value="ENTER AUTHORIZED SERVER"/>
+        <entry key="field.Agent.To.Server.Port.Number" value="7005"/>
+        <entry key="ctm_agent.Tcp_ip.Timeout" value="60"/>
+        <entry key="field.Server.To.Agent.Port.Number" value="${free.port(7006)}"/>
+        <entry key="Ignore.Disabling.Agent.Failure" value="false"/>
+        <entry key="ctm_agent.Force.Upgrade" value="false"/>
+        <entry key="field.Primary.Controlm.Server.Host" value="ENTER PRIMARY SERVER"/>
+    </agent.parameters>
+</AutomatedInstallation>
+
+step 10 : stop the agent and start it with root 
+
+
+
+
+
+

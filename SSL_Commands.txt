@@ -1,0 +1,3 @@
+SSL Commands
+
+openssl s_client -connect manidrdb.manicorp.com:7006

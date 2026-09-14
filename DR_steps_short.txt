@@ -1,0 +1,63 @@
+DR Activity ( Full DR Exedcution ) [ Primary DC is down ]
+
+1.0 Ask DBA to change Read mode to write mode in DR DB and stop replication.
+2.0 Once DR DB is in closed mode and Primary DB is in READ Mode then proceed for further steps
+3.0 Login to DR EM Primary Server 
+3.1 run the command # em restore_host_config -reconf_db
+It will ask for below details as mentioned in 
+
+3.2
+Perform “RESTORE HOST” for Control-M/EM (Enterprise Manager) processes and components on Primary DR (Disaster Recovery) server.
+em restore_host_config -dr -primary -password xxxxxx
+
+4.0 Login to DR EM Secondary Server
+4.1
+Execute below command in Control-M/EM Secondary DR server on command line: 
+em restore_host_config -reconf_db
+
+4.2
+Execute below command in Control-M/EM Secondary DR server on command line: 
+em restore_host_config -dr -secondary -password XXXXXXXX
+
+5.0
+Start-Up Control-M/EM base processes and components on Primary DR server
+start-all
+
+6.0
+Check and validate that all Control-M/EM components and processes are up and running:
+
+7.0
+Start configuration agent on Control-M/EM Secondary DR server
+
+===================== CTM Server ==============================
+8.0 Login to DR Primary CTM Server 
+
+8.1 Perform “RESTORE DATABASE” on Control-M/Server on Primary DR (Disaster Recovery) server
+restore_host_config reconf_db <DRDB> -port <DRPORT> -service <DBSERVICE> -dbname <DBNAME> -owner <DB OWNER> -password xxxxxxxx
+
+8.2 Ser DR Primary to Primary CTM Server 
+restore_host_config -dr primary 
+
+9.0 Login to DR Secondary CTM Server
+
+9.1 Perform “RESTORE DATABASE” on Control-M/Server on Secondary DR (Disaster Recovery) server
+restore_host_config reconf_db <DRDB> -port <DRPORT> -service <DBSERVICE> -dbname <DBNAME> -owner <DB OWNER> -password xxxxxxxx
+
+9.2 Set DR Secondary to Secondary CTM server 
+
+restore_host_config -dr secondary
+
+10. On primary CTM server pause the control-m
+ctm_pause Y
+
+11. on primary start CTM services using ctm_menu
+12 . on secondary DR start config agent by running start_Ca
+
+13. In CCM’s Control-M Server Definitions: Right click on 
+old server -> properties ->communication and change the hostname to DR primary hostname
+
+
+
+
+
+
